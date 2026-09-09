@@ -326,6 +326,7 @@ class MarkdownWindow(QMainWindow):
         self.dirty = False
         self.editor.document().setModified(False)
         self._render(self.editor.toPlainText())
+        self.settings.setValue("lastDirectory", str(self.current_path.parent))
         self._add_recent(self.current_path)
         self._update_title()
         self.statusBar().showMessage(f"Saved {self.current_path}", 5000)
@@ -369,8 +370,13 @@ class MarkdownWindow(QMainWindow):
         return True
 
     def set_view(self, mode: str) -> None:
+        if mode not in {"split", "preview", "editor"}:
+            return
         self.editor.setVisible(mode in {"split", "editor"})
         self.preview.setVisible(mode in {"split", "preview"})
+        self.split_action.setChecked(mode == "split")
+        self.preview_action.setChecked(mode == "preview")
+        self.edit_action.setChecked(mode == "editor")
         if mode == "split":
             self.splitter.setSizes([470, 630])
         self.statusBar().showMessage(f"{mode.title()} view", 2000)

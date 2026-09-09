@@ -64,16 +64,23 @@ def test_save_as_adds_markdown_extension(window, tmp_path, monkeypatch):
     window.new_document()
     window.editor.setPlainText("# New")
 
+    saved_path = destination.with_suffix(".md")
     assert window.save_as()
-    assert destination.with_suffix(".md").read_text(encoding="utf-8") == "# New"
+    assert saved_path.read_text(encoding="utf-8") == "# New"
+    assert window.settings.value("lastDirectory") == str(saved_path.parent)
 
 
 def test_view_modes_and_zoom(window):
     window.set_view("preview")
     assert not window.editor.isVisible()
+    assert window.preview_action.isChecked()
     window.set_view("editor")
     assert not window.preview.isVisible()
+    assert window.edit_action.isChecked()
     window.set_view("split")
+    assert window.split_action.isChecked()
+    window.set_view("invalid")
+    assert window.split_action.isChecked()
 
     window.zoom_in()
     assert window._preview_zoom == 1
