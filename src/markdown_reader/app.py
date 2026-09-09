@@ -517,7 +517,7 @@ class MarkdownWindow(QMainWindow):
         QMessageBox.about(
             self,
             f"About {APP_NAME}",
-            "<b>Markdown Reader 0.1.2</b><br><br>"
+            "<b>Markdown Reader 0.1.3</b><br><br>"
             "A small native Markdown reader and editor with live preview, "
             "drag-and-drop, PDF export, search, and zoom.",
         )
